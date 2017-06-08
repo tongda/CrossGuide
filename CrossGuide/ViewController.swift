@@ -47,10 +47,10 @@ class ViewController: UIViewController {
 
 
         displayPipeline = try! device.makeComputePipelineState(function: function)
-//        mtkView.device = device
-//        mtkView.delegate = self
-//        crossGuide = CrossGuideNet(device: device)
-//        CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, device, nil, &videoTextureCache)
+        mtkView.device = device
+        mtkView.delegate = self
+        crossGuide = CrossGuideNet(device: device)
+        CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, device, nil, &videoTextureCache)
         videoInit()
         randomRotate()
     }
@@ -68,8 +68,8 @@ class ViewController: UIViewController {
     }
 
     func videoInit() {
-//        let queue = DispatchQueue(label: "com.color.back")
-//        output.setSampleBufferDelegate(self, queue: queue)
+        let queue = DispatchQueue(label: "com.color.back")
+        output.setSampleBufferDelegate(self, queue: queue)
         output.videoSettings = [kCVPixelBufferPixelFormatTypeKey as AnyHashable: kCVPixelFormatType_420YpCbCr8BiPlanarFullRange]
         videoDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
         captureDeviceInput = try! AVCaptureDeviceInput(device: videoDevice)
@@ -104,7 +104,7 @@ extension ViewController: AVCaptureVideoDataOutputSampleBufferDelegate{
                                                   videoTextureCache!,
                                                   pixelBuffer,
                                                   nil,
-                                                  .r8Unorm,
+                                                  .rgba8Unorm,
                                                   yWidth, yHeight, 0,
                                                   &yTextureRef)
         inputTexture = CVMetalTextureGetTexture(yTextureRef!)
