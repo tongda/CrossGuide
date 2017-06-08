@@ -125,7 +125,7 @@
 				TargetAttributes = {
 					172EDC5A1EE7C4B30060C33C = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = RH547UXARG;
+						DevelopmentTeam = QMP4D362DR;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -297,10 +297,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = RH547UXARG;
+				DEVELOPMENT_TEAM = QMP4D362DR;
 				INFOPLIST_FILE = CrossGuide/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Ruoyu.CrossGuide;
+				PRODUCT_BUNDLE_IDENTIFIER = iossocket.CrossGuide;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -310,10 +310,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = RH547UXARG;
+				DEVELOPMENT_TEAM = QMP4D362DR;
 				INFOPLIST_FILE = CrossGuide/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Ruoyu.CrossGuide;
+				PRODUCT_BUNDLE_IDENTIFIER = iossocket.CrossGuide;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -338,6 +338,7 @@
 				172EDC6F1EE7C4B30060C33C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

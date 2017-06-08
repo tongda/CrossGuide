@@ -16,7 +16,13 @@ import MetalPerformanceShaders
 class ViewController: UIViewController {
 
     @IBOutlet weak var mtkView: MTKView!
-
+    @IBOutlet weak var previewLayer: UIView!
+    @IBOutlet weak var arrow: UIImageView!
+    
+    var timer: Timer!
+    var videoDevice: AVCaptureDevice!
+    var captureDeviceInput: AVCaptureDeviceInput!
+    var videoPreviewLayer: AVCaptureVideoPreviewLayer!
     let session = AVCaptureSession()
     let output = AVCaptureVideoDataOutput()
     var crossGuide: Layer?
@@ -41,23 +47,46 @@ class ViewController: UIViewController {
 
 
         displayPipeline = try! device.makeComputePipelineState(function: function)
-        mtkView.device = device
-        mtkView.delegate = self
-        crossGuide = CrossGuideNet(device: device)
-        CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, device, nil, &videoTextureCache)
+//        mtkView.device = device
+//        mtkView.delegate = self
+//        crossGuide = CrossGuideNet(device: device)
+//        CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, device, nil, &videoTextureCache)
         videoInit()
-
+        randomRotate()
+    }
+    
+    func randomRotate() {
+        self.timer = Timer(fire: Date(), interval: 1.0, repeats: true, block: { (timer) in
+            let a = arc4random_uniform(100)
+            let randomValue = (Double(a) - 50) / 50.0
+            
+            UIView.animate(withDuration: 0.5) { [weak self] _ in
+                self?.arrow.transform = CGAffineTransform(rotationAngle: CGFloat(randomValue * Double.pi / 180))
+            }
+        })
+        RunLoop.current.add(self.timer!, forMode: .defaultRunLoopMode)
     }
 
     func videoInit() {
-        let queue = DispatchQueue(label: "com.color.back")
-        output.setSampleBufferDelegate(self, queue: queue)
+//        let queue = DispatchQueue(label: "com.color.back")
+//        output.setSampleBufferDelegate(self, queue: queue)
         output.videoSettings = [kCVPixelBufferPixelFormatTypeKey as AnyHashable: kCVPixelFormatType_420YpCbCr8BiPlanarFullRange]
-        guard let videoDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo) else { return }
-        try? session.addInput(AVCaptureDeviceInput(device: videoDevice))
-        session.addOutput(output)
+        videoDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
+        captureDeviceInput = try! AVCaptureDeviceInput(device: videoDevice)
+        if session.canAddInput(captureDeviceInput) {
+            session.addInput(captureDeviceInput)
+        }
+        if session.canAddOutput(output) {
+            session.addOutput(output)
+        }
+        
         output.connection(withMediaType: AVMediaTypeVideo).videoOrientation = .portrait
+        
         session.sessionPreset = AVCaptureSessionPreset352x288
+        
+        videoPreviewLayer = AVCaptureVideoPreviewLayer(session: session)
+        videoPreviewLayer.frame = view.bounds
+        previewLayer.layer.addSublayer(videoPreviewLayer)
         session.startRunning()
     }
 }
@@ -108,6 +137,23 @@ extension ViewController: MTKViewDelegate{
         drawable.present()
         semaphoreCapture.signal()
         
+    }
+}
+
+extension Int {
+    init(random range: Range<Int>) {
+        
+        let offset: Int
+        if range.lowerBound < 0 {
+            offset = abs(range.lowerBound)
+        } else {
+            offset = 0
+        }
+        
+        let min = UInt32(range.lowerBound + offset)
+        let max = UInt32(range.upperBound + offset)
+        
+        self = Int(min + arc4random_uniform(max - min)) - offset
     }
 }
 
