@@ -17,8 +17,8 @@ func Input(device: MTLDevice)->Layer{
     let norm = MPSCNNNeuronLinear(device: device, a: 1.0/255.0, b: -0.5)
     return { (commandbuffer, input) in
         let outputID = MPSImageDescriptor(channelFormat: .float16,
-                                          width: 352,
-                                          height: 288,
+                                          width: 288,
+                                          height: 352,
                                           featureChannels: 3)
         let output = MPSTemporaryImage(commandBuffer: commandbuffer, imageDescriptor: outputID)
         scale.encode(commandBuffer: commandbuffer, sourceTexture: input.texture, destinationTexture: output.texture)
