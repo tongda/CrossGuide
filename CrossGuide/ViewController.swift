@@ -127,8 +127,9 @@ extension ViewController: MTKViewDelegate{
         }
         
         print(rotateRate)
-        semaphoreCapture.signal()
-        
+        DispatchQueue.global().asyncAfter(deadline: .now() + 0.2) {
+            self.semaphoreCapture.signal()
+        }
     }
     
     private func converFromUInt16ToFloat(input: inout [UInt16]) -> [Float] {
