@@ -24,10 +24,10 @@ func CrossGuideNet(device: MTLDevice) -> Layer {
     let conv4 = Conv2d(kernelWidth:5, kernelHeight:5, inputFeatures: 32,   outputFeatures: 64,  activation: tanh, device: device, name: "conv2d_4")
     let conv5 = Conv2d(kernelWidth:3, kernelHeight:3, inputFeatures: 64,   outputFeatures: 64,  activation: tanh, device: device, name: "conv2d_5")
     let conv6 = Conv2d(kernelWidth:3, kernelHeight:3, inputFeatures: 64,   outputFeatures: 128,  activation: tanh, device: device, name: "conv2d_6")
-    let dense1 = Dense(kernelWidth: 11, kernelHeight: 9, inputFeatures: 128, outputFeatures: 128, activation: tanh, device: device, name: "dense_1")
-    let dense2 = Dense(kernelWidth: 1, kernelHeight: 1, inputFeatures: 128, outputFeatures: 64, activation: tanh, device: device, name: "dense_2")
-    let dense3 = Dense(kernelWidth: 1, kernelHeight: 1, inputFeatures: 64, outputFeatures: 16, activation: tanh, device: device, name: "dense_3")
-    let dense4 = Dense(kernelWidth: 1, kernelHeight: 1, inputFeatures: 16, outputFeatures: 3, activation: nil, device: device, name: "dense_4")
+    let dense1 = Dense(kernelWidth: 11, kernelHeight: 9, inputFeatures: 128, outputFeatures: 128, activation: tanh, device: device, name: "conv2d_7")
+    let dense2 = Dense(kernelWidth: 1, kernelHeight: 1, inputFeatures: 128, outputFeatures: 64, activation: tanh, device: device, name: "conv2d_8")
+    let dense3 = Dense(kernelWidth: 1, kernelHeight: 1, inputFeatures: 64, outputFeatures: 16, activation: tanh, device: device, name: "conv2d_9")
+    let dense4 = Dense(kernelWidth: 1, kernelHeight: 1, inputFeatures: 16, outputFeatures: 3, activation: nil, device: device, name: "conv2d_10")
 
     return { raw in
         let input = raw
