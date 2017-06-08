@@ -53,19 +53,6 @@ class ViewController: UIViewController {
         crossGuide = CrossGuideNet(device: device)
         CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, device, nil, &videoTextureCache)
         videoInit()
-//        randomRotate()
-    }
-    
-    func randomRotate() {
-        self.timer = Timer(fire: Date(), interval: 1.0, repeats: true, block: { (timer) in
-            let a = arc4random_uniform(100)
-            let randomValue = (Double(a) - 50) / 50.0
-            
-            UIView.animate(withDuration: 0.5) { [weak self] _ in
-                self?.arrow.transform = CGAffineTransform(rotationAngle: CGFloat(randomValue * Double.pi / 180))
-            }
-        })
-        RunLoop.current.add(self.timer!, forMode: .defaultRunLoopMode)
     }
 
     func videoInit() {
@@ -136,7 +123,7 @@ extension ViewController: MTKViewDelegate{
         output.texture.getBytes(&(outputArray[0]), bytesPerRow: 8, from: region, mipmapLevel: 0)
         let rotateRate = converFromUInt16ToFloat(input: &outputArray)
         UIView.animate(withDuration: 0.5) { [weak self] _ in
-            self?.arrow.transform = CGAffineTransform(rotationAngle: -CGFloat(rotateRate[1] / Float.pi * 180))
+            self?.arrow.transform = CGAffineTransform(rotationAngle: -CGFloat(rotateRate[1]))
         }
         
         print(rotateRate)
