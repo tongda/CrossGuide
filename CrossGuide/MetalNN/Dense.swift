@@ -28,8 +28,8 @@ func Dense(kernelWidth: Int = 1, kernelHeight: Int = 1,
                                      flags: .none)
     return { (commandbuffer, input) in
         let outputID = MPSImageDescriptor(channelFormat: .float16,
-                                          width: input.width,
-                                          height: input.height,
+                                          width: 1,
+                                          height: 1,
                                           featureChannels: outputFeatures)
         let output = MPSTemporaryImage(commandBuffer: commandbuffer, imageDescriptor: outputID)
         dense.encode(commandBuffer: commandbuffer, sourceImage: input, destinationImage: output)

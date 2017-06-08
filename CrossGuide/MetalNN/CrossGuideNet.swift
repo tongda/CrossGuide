@@ -32,36 +32,28 @@ func CrossGuideNet(device: MTLDevice) -> Layer {
     return { raw in
         let input = raw
             |> image
-            |> retain()
         let pool1 = input
             |> conv1
             |> conv2
-            |> retain()
         let pool2 = pool1
             |> poolMax
             |> conv3
-            |> retain()
         let pool3 = pool2
             |> poolMax
             |> conv4
-            |> retain()
         let pool4 = pool3
             |> poolMax
             |> conv5
-            |> retain()
         let pool5 = pool4
             |> poolMax
             |> conv6
-            |> retain()
+            |> poolMax
         let fc0 = pool5
             |> dense1
-            |> retain()
         let fc1 = fc0
             |> dense2
-            |> retain()
         let fc2 = fc1
             |> dense3
-            |> retain()
         let fc3 = fc2
             |> dense4
         return fc3
