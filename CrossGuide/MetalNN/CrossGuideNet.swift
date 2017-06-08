@@ -11,10 +11,8 @@ import MetalPerformanceShaders
 
 
 func CrossGuideNet(device: MTLDevice) -> Layer {
-
     let tanh = MPSCNNNeuronTanH(device: device, a:1, b:1)
 
-    //    TODO: apply normalization `(x / 255.0) - 0.5`
     let image = Input(device: device)
     let poolMax = PoolingMax(device: device)
 
