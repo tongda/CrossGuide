@@ -33,25 +33,22 @@ class SpeechService: NSObject {
         }
     }
     
-    func say(words: String, isLeft: Bool? = nil) {
+    func say(command: Command) {
         if synthesizer.isSpeaking {
             return
         }
         
-        let utterance = AVSpeechUtterance(string: words)
-        
-        if let isLeft = isLeft {
-            if isLeft {
-                setLeftChannel()
-            } else {
-                setRightChannel()
-            }
-        } else {
-            if #available(iOS 10.0, *) {
-                synthesizer.outputChannels = []
-            }
+        var words: String = ""
+        switch command {
+        case .left(let degree):
+            setLeftChannel()
+            words = "left \(degree) degree"
+        case .right(let degree):
+            setRightChannel()
+            words = "right \(degree) degree"
         }
         
+        let utterance = AVSpeechUtterance(string: words)
         synthesizer.speak(utterance)
     }
     

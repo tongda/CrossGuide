@@ -14,22 +14,27 @@ enum Command {
 }
 
 protocol AdjustServiceDelegate: class {
-    func shouldTurn(commond: Command)
+    func shouldTurn(command: Command)
 }
 
 class AdjustService {
     weak var delegate: AdjustServiceDelegate?
     var array = FIFO()
-    let threshold: CGFloat = 1
+    let threshold: Float = 1
     
-    func insertData(degree: CGFloat) {
+    func insertData(degree: Float) {
         array.insertData(data: degree)
         guard let average = array.getAverageValue() else {
             return
         }
+        guard let last = array.getCurrentData() else {
+            return
+        }
         
         if average > threshold {
-            delegate?.shouldTurn(commond: Command.left(degree: 0))
+            delegate?.shouldTurn(command: Command.left(degree: Int(last)))
+        } else if average < -threshold {
+            delegate?.shouldTurn(command: Command.right(degree: Int(last)))
         }
     }
     
@@ -39,17 +44,17 @@ class AdjustService {
 }
 
 struct FIFO {
-    var array = [CGFloat](repeating: 0.0, count: 4)
+    var array = [Float](repeating: 0.0, count: 4)
     var currentIndex: Int = 0
     var nextIndex: Int = 0
     
-    mutating func insertData(data: CGFloat) {
+    mutating func insertData(data: Float) {
         array[nextIndex] = data
         currentIndex = nextIndex
         nextIndex = (nextIndex + 1) % array.count
     }
     
-    func getCurrentData() -> CGFloat? {
+    func getCurrentData() -> Float? {
         if currentIndex == nextIndex {
             return nil
         }
@@ -57,7 +62,7 @@ struct FIFO {
         return array[currentIndex]
     }
     
-    func getAverageValue() -> CGFloat? {
+    func getAverageValue() -> Float? {
         if currentIndex == nextIndex {
             return nil
         }
@@ -66,15 +71,15 @@ struct FIFO {
     }
     
     mutating func emptyArray() {
-        array = [CGFloat](repeating: 0.0, count: 4)
+        array = [Float](repeating: 0.0, count: 4)
     }
 }
 
-extension Array where Element == CGFloat {
+extension Array where Element == Float {
     var total: Element {
         return reduce(0, +)
     }
-    var average: CGFloat {
-        return isEmpty ? 0 : reduce(0, +) / CGFloat(count)
+    var average: Float {
+        return isEmpty ? 0 : reduce(0, +) / Float(count)
     }
 }

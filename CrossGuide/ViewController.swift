@@ -35,6 +35,9 @@ class ViewController: UIViewController {
     let semaphoreCapture = DispatchSemaphore(value: 1)
 
     var inputTexture:MTLTexture? = nil
+    
+    var adjustService: AdjustService!
+    var speechService: SpeechService!
 
     @IBOutlet weak var label: UILabel!
 
@@ -52,6 +55,7 @@ class ViewController: UIViewController {
         mtkView.delegate = self
         crossGuide = CrossGuideNet(device: device)
         CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, device, nil, &videoTextureCache)
+        initService()
         videoInit()
     }
 
@@ -76,6 +80,13 @@ class ViewController: UIViewController {
         videoPreviewLayer.frame = view.bounds
         previewLayer.layer.addSublayer(videoPreviewLayer)
         session.startRunning()
+    }
+    
+    private func initService() {
+        adjustService = AdjustService()
+        adjustService.delegate = self
+        speechService = SpeechService()
+        speechService.initChannel()
     }
 }
 
@@ -127,6 +138,7 @@ extension ViewController: MTKViewDelegate{
         }
         
         print(rotateRate)
+        adjustService.insertData(degree: rotateRate[1])
         DispatchQueue.global().asyncAfter(deadline: .now() + 0.2) {
             self.semaphoreCapture.signal()
         }
@@ -139,6 +151,12 @@ extension ViewController: MTKViewDelegate{
         var dst = vImage_Buffer(data:&output, height:1, width:UInt(n), rowBytes:4*n)
         vImageConvert_Planar16FtoPlanarF(&src, &dst, 0)
         return output
+    }
+}
+
+extension ViewController: AdjustServiceDelegate {
+    func shouldTurn(command: Command) {
+        speechService.say(command: command)
     }
 }
 
