@@ -42,6 +42,7 @@
 		BFA04FB11EE95844002A8376 /* conv2d_10_kernel in Resources */ = {isa = PBXBuildFile; fileRef = BFA04FA91EE95844002A8376 /* conv2d_10_kernel */; };
 		D001E0C61EEA3A7300F466E5 /* AdjustService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D001E0C51EEA3A7300F466E5 /* AdjustService.swift */; };
 		D001E0C81EEA3ACA00F466E5 /* SpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D001E0C71EEA3ACA00F466E5 /* SpeechService.swift */; };
+		D001E0CA1EEA50C500F466E5 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D001E0C91EEA50C500F466E5 /* SettingViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +83,7 @@
 		BFA04FA91EE95844002A8376 /* conv2d_10_kernel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = conv2d_10_kernel; sourceTree = "<group>"; };
 		D001E0C51EEA3A7300F466E5 /* AdjustService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdjustService.swift; sourceTree = "<group>"; };
 		D001E0C71EEA3ACA00F466E5 /* SpeechService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechService.swift; sourceTree = "<group>"; };
+		D001E0C91EEA50C500F466E5 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +122,7 @@
 				172EDC601EE7C4B30060C33C /* ViewController.swift */,
 				D001E0C51EEA3A7300F466E5 /* AdjustService.swift */,
 				D001E0C71EEA3ACA00F466E5 /* SpeechService.swift */,
+				D001E0C91EEA50C500F466E5 /* SettingViewController.swift */,
 				172EDC621EE7C4B30060C33C /* Main.storyboard */,
 				172EDC651EE7C4B30060C33C /* Assets.xcassets */,
 				172EDC671EE7C4B30060C33C /* LaunchScreen.storyboard */,
@@ -266,6 +269,7 @@
 				D001E0C61EEA3A7300F466E5 /* AdjustService.swift in Sources */,
 				172EDC901EE7C9F60060C33C /* Shaders.metal in Sources */,
 				172EDC8D1EE7C9F60060C33C /* CrossGuideNet.swift in Sources */,
+				D001E0CA1EEA50C500F466E5 /* SettingViewController.swift in Sources */,
 				172EDC8C1EE7C9F60060C33C /* Convolution.swift in Sources */,
 				172EDC8B1EE7C9F60060C33C /* BatchNorm.swift in Sources */,
 				172EDC611EE7C4B30060C33C /* ViewController.swift in Sources */,

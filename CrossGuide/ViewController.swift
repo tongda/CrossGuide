@@ -13,6 +13,9 @@ import AVFoundation
 import MetalPerformanceShaders
 import Accelerate
 
+protocol SettingDelegate: class {
+    func didChangedSettings(threshold: Float, arrayCount: Int, timeInterval: Double)
+}
 
 class ViewController: UIViewController {
 
@@ -38,6 +41,7 @@ class ViewController: UIViewController {
     
     var adjustService: AdjustService!
     var speechService: SpeechService!
+    var timeInterval = 0.2
 
     @IBOutlet weak var label: UILabel!
 
@@ -55,8 +59,18 @@ class ViewController: UIViewController {
         mtkView.delegate = self
         crossGuide = CrossGuideNet(device: device)
         CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, device, nil, &videoTextureCache)
+        
         initService()
         videoInit()
+    }
+    
+    @IBAction func editTapped(_ sender: Any) {
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SettingViewController") as! SettingViewController
+        vc.delegate = self
+        vc.timeInterval = timeInterval
+        vc.arrayCount = adjustService.array.getCount()
+        vc.threshold = adjustService.threshold
+        show(vc, sender: nil)
     }
 
     func videoInit() {
@@ -90,6 +104,13 @@ class ViewController: UIViewController {
     }
 }
 
+extension ViewController: SettingDelegate {
+    func didChangedSettings(threshold: Float, arrayCount: Int, timeInterval: Double) {
+        self.timeInterval = timeInterval
+        self.adjustService = AdjustService(threshold: threshold, arrayCount: arrayCount)
+        adjustService.delegate = self
+    }
+}
 
 extension ViewController: AVCaptureVideoDataOutputSampleBufferDelegate{
     func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, from connection: AVCaptureConnection!) {
@@ -139,7 +160,7 @@ extension ViewController: MTKViewDelegate{
         
         print(rotateRate)
         adjustService.insertData(degree: rotateRate[1])
-        DispatchQueue.global().asyncAfter(deadline: .now() + 0.2) {
+        DispatchQueue.global().asyncAfter(deadline: .now() + timeInterval) {
             self.semaphoreCapture.signal()
         }
     }

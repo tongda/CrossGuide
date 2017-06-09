@@ -19,8 +19,13 @@ protocol AdjustServiceDelegate: class {
 
 class AdjustService {
     weak var delegate: AdjustServiceDelegate?
-    var array = FIFO()
-    let threshold: Float = 1
+    let array: FIFO
+    let threshold: Float
+    
+    init(threshold: Float = 1, arrayCount: Int = 4) {
+        self.threshold = threshold
+        self.array = FIFO(arrayCount: arrayCount)
+    }
     
     func insertData(degree: Float) {
         array.insertData(data: degree)
@@ -45,12 +50,20 @@ class AdjustService {
     }
 }
 
-struct FIFO {
-    var array = [Float](repeating: 0.0, count: 4)
-    var currentIndex: Int = 0
-    var nextIndex: Int = 0
+class FIFO {
+    fileprivate var array: [Float]
+    private var currentIndex: Int = 0
+    private var nextIndex: Int = 0
     
-    mutating func insertData(data: Float) {
+    init(arrayCount: Int) {
+        array = [Float](repeating: 0.0, count: arrayCount)
+    }
+    
+    func getCount() -> Int {
+        return array.count
+    }
+    
+    func insertData(data: Float) {
         array[nextIndex] = data
         currentIndex = nextIndex
         nextIndex = (nextIndex + 1) % array.count
@@ -72,7 +85,7 @@ struct FIFO {
         return array.average
     }
     
-    mutating func emptyArray() {
+    func emptyArray() {
         array = [Float](repeating: 0.0, count: 4)
     }
 }
