@@ -31,10 +31,12 @@ class AdjustService {
             return
         }
         
+        let degree = abs(Int(last * 180 / 3.14))
+        
         if average > threshold {
-            delegate?.shouldTurn(command: Command.left(degree: Int(last)))
+            delegate?.shouldTurn(command: Command.left(degree: Int(degree)))
         } else if average < -threshold {
-            delegate?.shouldTurn(command: Command.right(degree: Int(last)))
+            delegate?.shouldTurn(command: Command.right(degree: Int(degree)))
         }
     }
     
