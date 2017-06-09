@@ -91,9 +91,16 @@ class ViewController: UIViewController {
         session.sessionPreset = AVCaptureSessionPreset352x288
         
         videoPreviewLayer = AVCaptureVideoPreviewLayer(session: session)
+        
         videoPreviewLayer.frame = view.bounds
         previewLayer.layer.addSublayer(videoPreviewLayer)
         session.startRunning()
+    }
+    
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: { (_) in
+            self.videoPreviewLayer.frame = self.view.bounds
+        }, completion: nil)
     }
     
     private func initService() {
