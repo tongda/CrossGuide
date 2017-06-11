@@ -42,9 +42,9 @@ func retain(_ count: Int = 1) -> Layer{
     }
 }
 
-func loadParam(name: String, ext: String? = nil, count: Int) -> [Float]? {
+func loadParam(name: String, ext: String? = nil, count: Int, subdir: String) -> [Float]? {
     let size = count * MemoryLayout<Float>.size
-    guard let path = Bundle.main.path( forResource: name, ofType: ext) else{ return nil }
+    guard let path = Bundle.main.path(forResource: subdir + "/" + name, ofType: ext) else{ return nil }
     let fd  = open( path, O_RDONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH)
     defer { close(fd) }
     guard let hdrW = mmap(nil, size, PROT_READ, MAP_FILE | MAP_SHARED, fd, 0) else { return nil }

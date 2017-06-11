@@ -31,15 +31,16 @@ func PoolingMax(device: MTLDevice,
 
 func Conv2d(kernelWidth: Int = 3, kernelHeight: Int = 3,
             inputFeatures: Int, outputFeatures: Int,
-            activation: MPSCNNNeuron? = nil, device: MTLDevice, name: String) -> Layer {
+            activation: MPSCNNNeuron? = nil, device: MTLDevice, name: String, group: String) -> Layer {
     let convDesc = MPSCNNConvolutionDescriptor(kernelWidth: kernelWidth,
                                                kernelHeight: kernelHeight,
                                                inputFeatureChannels: inputFeatures,
                                                outputFeatureChannels: outputFeatures,
                                                neuronFilter: activation)
     let w = loadParam(name: name + "_kernel",
-                      count: inputFeatures * kernelHeight * kernelWidth * outputFeatures)
-    let b = loadParam(name: name + "_bias", count: outputFeatures)
+                      count: inputFeatures * kernelHeight * kernelWidth * outputFeatures,
+                      subdir: group)
+    let b = loadParam(name: name + "_bias", count: outputFeatures, subdir: group)
     let conv = MPSCNNConvolution(device: device,
                                  convolutionDescriptor: convDesc,
                                  kernelWeights: w!,

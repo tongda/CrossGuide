@@ -11,14 +11,14 @@ import MetalPerformanceShaders
 
 
 
-func Input(device: MTLDevice)->Layer{
+func Input(device: MTLDevice, size: [Int])->Layer{
     
     let scale = MPSImageLanczosScale(device: device)
     let norm = MPSCNNNeuronLinear(device: device, a: 1.0, b: -0.5)
     return { (commandbuffer, input) in
         let outputID = MPSImageDescriptor(channelFormat: .float16,
-                                          width: 288,
-                                          height: 352,
+                                          width: size[1],
+                                          height: size[0],
                                           featureChannels: 3)
         let output = MPSTemporaryImage(commandBuffer: commandbuffer, imageDescriptor: outputID)
         scale.encode(commandBuffer: commandbuffer, sourceTexture: input.texture, destinationTexture: output.texture)

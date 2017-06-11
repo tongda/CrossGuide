@@ -29,7 +29,9 @@ class ViewController: UIViewController {
     var videoPreviewLayer: AVCaptureVideoPreviewLayer!
     let session = AVCaptureSession()
     let output = AVCaptureVideoDataOutput()
-    var crossGuide: Layer?
+    var crossGuidePortrait: Layer?
+    var crossGuideLandscape: Layer?
+    var currentGuide: Layer?
     var videoTextureCache : CVMetalTextureCache?
     var commandQueue: MTLCommandQueue!
     var displayPipeline: MTLComputePipelineState!
@@ -57,7 +59,14 @@ class ViewController: UIViewController {
         displayPipeline = try! device.makeComputePipelineState(function: function)
         mtkView.device = device
         mtkView.delegate = self
-        crossGuide = CrossGuideNet(device: device)
+        crossGuidePortrait = CrossGuideNet(device: device, group: "portrait", inputSize: [352, 288])
+        crossGuideLandscape = CrossGuideNet(device: device, group: "landscape", inputSize: [288, 352])
+        // only consider protrait and landscape left
+        if UIDevice.current.orientation == .portrait {
+            currentGuide = crossGuidePortrait
+        } else {
+            currentGuide = crossGuideLandscape
+        }
         CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, device, nil, &videoTextureCache)
         
         initService()
@@ -150,7 +159,7 @@ extension ViewController: MTKViewDelegate{
         }
         let commandBuffer = commandQueue.makeCommandBuffer()
         let src = MPSImage(texture: inputTexture, featureChannels: 3)
-        let (_, prediction) = crossGuide!(commandbuffer: commandBuffer, image: src)
+        let (_, prediction) = currentGuide!(commandbuffer: commandBuffer, image: src)
         let scale = MPSCNNNeuronLinear(device: commandBuffer.device, a: 1, b: 0)
         let outID = MPSImageDescriptor(channelFormat: .float16, width: 1, height: 1, featureChannels: 3)
         let output = MPSImage(device: commandBuffer.device, imageDescriptor: outID)
@@ -161,8 +170,11 @@ extension ViewController: MTKViewDelegate{
         let region = MTLRegion(origin: MTLOrigin(x: 0, y: 0, z: 0), size: MTLSize(width: 1, height: 1, depth: 1))
         output.texture.getBytes(&(outputArray[0]), bytesPerRow: 8, from: region, mipmapLevel: 0)
         let rotateRate = converFromUInt16ToFloat(input: &outputArray)
+        
+        let rotateIndex = UIDevice.current.orientation == .portrait ? 1 : 0
+        
         UIView.animate(withDuration: 0.5) { [weak self] _ in
-            self?.arrow.transform = CGAffineTransform(rotationAngle: -CGFloat(rotateRate[1]))
+            self?.arrow.transform = CGAffineTransform(rotationAngle: -CGFloat(rotateRate[rotateIndex]))
         }
         
         print(rotateRate)

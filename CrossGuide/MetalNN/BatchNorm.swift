@@ -10,13 +10,13 @@ import Foundation
 import MetalPerformanceShaders
 
 
-func BatchNorm(features: Int, device: MTLDevice, name: String) -> Layer {
+func BatchNorm(features: Int, device: MTLDevice, name: String, group: String) -> Layer {
     
 
-    let beta        = loadParam(name: name + "_bn_beta", count: features)!
-    let gamma       = loadParam(name: name + "_bn_gamma", count: features)!
-    let mean        = loadParam(name: name + "_bn_mean", count: features)!
-    let variance    = loadParam(name: name + "_bn_variance", count: features)!
+    let beta        = loadParam(name: name + "_bn_beta", count: features, subdir: group)!
+    let gamma       = loadParam(name: name + "_bn_gamma", count: features, subdir: group)!
+    let mean        = loadParam(name: name + "_bn_mean", count: features, subdir: group)!
+    let variance    = loadParam(name: name + "_bn_variance", count: features, subdir: group)!
 
     let bBuffer = device.makeBuffer(bytes: beta, length: features*4, options: [])
     let gBuffer = device.makeBuffer(bytes: gamma, length: features*4, options: [])
