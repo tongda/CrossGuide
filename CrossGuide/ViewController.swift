@@ -112,8 +112,8 @@ class ViewController: UIViewController {
                 self.output.connection(withMediaType: AVMediaTypeVideo).videoOrientation = .portrait
                 self.videoPreviewLayer.connection.videoOrientation = .portrait
             }else{
-                self.output.connection(withMediaType: AVMediaTypeVideo).videoOrientation = .landscapeLeft
-                self.videoPreviewLayer.connection.videoOrientation = .landscapeLeft
+                self.output.connection(withMediaType: AVMediaTypeVideo).videoOrientation = .landscapeRight
+                self.videoPreviewLayer.connection.videoOrientation = .landscapeRight
             }
             self.videoPreviewLayer.frame = self.view.bounds
         }, completion: nil)
