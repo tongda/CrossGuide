@@ -111,9 +111,11 @@ class ViewController: UIViewController {
             if .regular ~= newCollection.verticalSizeClass{
                 self.output.connection(withMediaType: AVMediaTypeVideo).videoOrientation = .portrait
                 self.videoPreviewLayer.connection.videoOrientation = .portrait
+                self.currentGuide = self.crossGuidePortrait
             }else{
                 self.output.connection(withMediaType: AVMediaTypeVideo).videoOrientation = .landscapeRight
                 self.videoPreviewLayer.connection.videoOrientation = .landscapeRight
+                self.currentGuide = self.crossGuideLandscape
             }
             self.videoPreviewLayer.frame = self.view.bounds
         }, completion: nil)
