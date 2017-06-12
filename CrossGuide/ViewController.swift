@@ -85,7 +85,7 @@ class ViewController: UIViewController {
     func videoInit() {
         let queue = DispatchQueue(label: "com.color.back")
         output.setSampleBufferDelegate(self, queue: queue)
-        output.videoSettings = [kCVPixelBufferPixelFormatTypeKey as AnyHashable: kCVPixelFormatType_420YpCbCr8BiPlanarFullRange]
+        output.videoSettings = [kCVPixelBufferPixelFormatTypeKey as AnyHashable: kCVPixelFormatType_32BGRA]
         videoDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
         captureDeviceInput = try! AVCaptureDeviceInput(device: videoDevice)
         if session.canAddInput(captureDeviceInput) {
@@ -108,6 +108,13 @@ class ViewController: UIViewController {
     
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         coordinator.animate(alongsideTransition: { (_) in
+            if .regular ~= newCollection.verticalSizeClass{
+                self.output.connection(withMediaType: AVMediaTypeVideo).videoOrientation = .portrait
+                self.videoPreviewLayer.connection.videoOrientation = .portrait
+            }else{
+                self.output.connection(withMediaType: AVMediaTypeVideo).videoOrientation = .landscapeLeft
+                self.videoPreviewLayer.connection.videoOrientation = .landscapeLeft
+            }
             self.videoPreviewLayer.frame = self.view.bounds
         }, completion: nil)
     }
