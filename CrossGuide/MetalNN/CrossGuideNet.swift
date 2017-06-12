@@ -25,7 +25,7 @@ func CrossGuideNet(device: MTLDevice, group: String, inputSize: [Int]) -> Layer 
     let dense1 = Dense(kernelWidth: inputSize[1] / 32, kernelHeight: inputSize[0] / 32, inputFeatures: 128, outputFeatures: 128, activation: tanh, device: device, name: "conv2d_7", group: group)
     let dense2 = Dense(kernelWidth: 1, kernelHeight: 1, inputFeatures: 128, outputFeatures: 64, activation: tanh, device: device, name: "conv2d_8", group: group)
     let dense3 = Dense(kernelWidth: 1, kernelHeight: 1, inputFeatures: 64, outputFeatures: 16, activation: tanh, device: device, name: "conv2d_9", group: group)
-    let dense4 = Dense(kernelWidth: 1, kernelHeight: 1, inputFeatures: 16, outputFeatures: 3, activation: nil, device: device, name: "conv2d_10", group: group)
+    let dense4 = Dense(kernelWidth: 1, kernelHeight: 1, inputFeatures: 16, outputFeatures: 2, activation: nil, device: device, name: "conv2d_10", group: group)
 
     return { raw in
         let input = raw
